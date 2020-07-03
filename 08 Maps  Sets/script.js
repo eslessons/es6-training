@@ -179,7 +179,13 @@
   let obj2 = { b: 2 };
   let set = new WeakSet([obj1, obj2, obj2]);
 
-  console.log(set.has(obj2));
+  
+  console.log(set.has(obj2)); // true
+  
+  set.delete(obj2);
+  console.log(set.has(obj2)); // false
+  
+  set.add(obj1);
 })();
 
 (() => {})();
