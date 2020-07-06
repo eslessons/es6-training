@@ -137,14 +137,30 @@
 
 // REVOCABLE PROXIES //
 
-(() => {})();
+(() => {
+  let person = {
+    name: 'Max',
+  };
 
-(() => {})();
+  let handler = {
+    get: function (target, property) {
+      return Reflect.get(target, property);
+    },
+  };
 
-(() => {})();
+  let { proxy, revoke } = Proxy.revocable(person, handler);
 
-(() => {})();
+  console.log(proxy);
+  // v Proxy {name: "Max"}
+  //    [[Handler]]: null
+  //    [[Target]]: null
+  //    [[IsRevoked]]: true
 
-(() => {})();
+  console.log(revoke); // ƒ () { [native code] }
 
-(() => {})();
+  console.log(proxy.name); // "Max"
+
+  revoke();
+
+  console.log(proxy.name); // Uncaught TypeError: Cannot perform 'get' on a proxy that has been revoked
+})();
